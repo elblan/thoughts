@@ -73,7 +73,6 @@ export default {
       item.active = !item.active
       this.$set(this.localThoughts, index, item)
     },
-
     addThought() {
       // ensure they actually typed something
       if (!this.thoughtObj.text) {
@@ -114,9 +113,13 @@ export default {
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
     padding: 8px;
     margin: 14px 22px;
+    transition: ease-out 0.2s;
   }
   .active {
-    background-color: $orange1;
+    background-color: $blue3;
+    padding: 16px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    transition: ease-in 0.15s;
   }
 }
 .new-thought {
