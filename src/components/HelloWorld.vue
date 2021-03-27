@@ -168,7 +168,9 @@ export default {
 }
 .sticky {
   position: fixed;
-  bottom: 20px;
+  bottom: 0px;
+  padding-bottom: 20px;
+  padding-top: 10px;
   left: 50%;
   width: 100%;
   transform: translate(-50%, 0);

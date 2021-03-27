@@ -2,6 +2,7 @@
 
 TODO:
 
+- autovanish edit placeholder
 - create proper components
 - vuex, vuex-persist
 - transitions
