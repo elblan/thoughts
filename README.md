@@ -2,9 +2,9 @@
 
 TODO:
 
-- Creation date
-- new design
-- active state
+- create proper components
+- vuex, vuex-persist
+- transitions
 
 ## Project setup
 
