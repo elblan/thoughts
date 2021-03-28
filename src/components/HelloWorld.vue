@@ -20,7 +20,7 @@
         <div
           class="delete-thought"
           v-if="thought.active"
-          @click="removeThought(n)"
+          @click="removeThought(index)"
         >
           delete
         </div>
@@ -38,9 +38,11 @@
           <span class="counter">{{ 160 - thoughtObj.text.length }}</span>
         </div>
         <div class="thought-form">
-          <div class="thought-content" contenteditable="true" @input="onInput">
-            <p>Edit me</p>
-          </div>
+          <div
+            id="thought-content"
+            contenteditable="true"
+            @input="onInput"
+          ></div>
         </div>
         <div class="thought-submit">
           <!--
@@ -51,7 +53,7 @@
       </div>
       <div
         class="thought-button"
-        @click="showForm ? addThought() : (showForm = true)"
+        @click="showForm ? addThought() : setShowForm()"
       >
         {{ showForm ? 'Save' : 'Add thought' }}
       </div>
@@ -86,12 +88,18 @@ export default {
   methods: {
     onInput(e) {
       this.thoughtObj.text = e.target.innerText
-      console.log(this.thoughtObj.text)
     },
     toggleActive(index) {
       let item = this.localThoughts[index]
       item.active = !item.active
       this.$set(this.localThoughts, index, item)
+    },
+    setShowForm() {
+      this.showForm = true
+      setTimeout(function() {
+        const div = document.getElementById('thought-content')
+        div.focus()
+      }, 0)
     },
     addThought() {
       // ensure they actually typed something
