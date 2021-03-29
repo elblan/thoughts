@@ -1,4 +1,9 @@
 module.exports = {
+  pwa: {
+    workboxOptions: {
+      skipWaiting: true
+    }
+  },
   css: {
     loaderOptions: {
       sass: {
