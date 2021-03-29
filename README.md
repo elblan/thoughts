@@ -2,11 +2,10 @@
 
 TODO:
 
-- fix delete (deletes at wrong index)
-- autovanish edit placeholder
 - create proper components
 - vuex, vuex-persist
 - transitions
+- copy paste when selected
 
 ## Project setup
 

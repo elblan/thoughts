@@ -6,9 +6,11 @@
         v-for="(thought, index) in localThoughts"
         :key="thought.text"
       >
-        <div class="thought-meta-published" v-if="thought.active">
-          {{ format(thought.date) }}
-        </div>
+        <transition name="fade">
+          <div class="thought-meta-published" v-if="thought.active">
+            {{ format(thought.date) }}
+          </div></transition
+        >
         <div
           class="thought"
           :class="{ active: thought.active }"
@@ -17,40 +19,59 @@
           <p>{{ thought.text }}</p>
           <!-- <span>{{ thought.text.length }}</span> -->
         </div>
-        <div
-          class="delete-thought"
-          v-if="thought.active"
-          @click="removeThought(index)"
-        >
-          delete
-        </div>
+        <transition name="fade">
+          <div class="thought-buttons">
+            <div
+              class="delete-thought"
+              v-if="thought.active"
+              @click="removeThought(index)"
+            >
+              delete
+            </div>
+            <!--
+            <div class="edit-thought" v-if="thought.active">
+              edit
+            </div> -->
+            <div
+              class="copy-thought"
+              v-if="thought.active"
+              @click="copyThought(index)"
+              v-clipboard:copy="thought.text"
+            >
+              {{ thought.copied ? 'copied' : 'copy' }}
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
     <div class="sticky">
-      <div class="new-thought" v-if="showForm">
-        <div class="thought-meta">
-          <div class="buttons">
-            <div class="delete-button" @click="deleteAll">Delete all</div>
-            <div class="cancel-button" @click="showForm = false">
-              Cancel
+      <transition name="fade">
+        <div class="new-thought" v-show="showForm">
+          <div class="thought-meta">
+            <div class="form-buttons">
+              <div class="delete-button" @click="deleteAll">Delete all</div>
+              <div class="cancel-button" @click="showForm = false">
+                Cancel
+              </div>
             </div>
+            <span class="counter">{{ 160 - thoughtObj.text.length }}</span>
           </div>
-          <span class="counter">{{ 160 - thoughtObj.text.length }}</span>
-        </div>
-        <div class="thought-form">
-          <div
-            id="thought-content"
-            contenteditable="true"
-            @input="onInput"
-          ></div>
-        </div>
-        <div class="thought-submit">
-          <!--
+          <div class="thought-form">
+            <div
+              id="thought-content"
+              contenteditable="true"
+              @input="onInput"
+            ></div>
+          </div>
+          <div class="thought-submit">
+            <!--
         <div class="tags">
           <span v-for="tag in tags" :key="tag" class="tag">{{ tag }}</span>
         </div>-->
+          </div>
         </div>
-      </div>
+      </transition>
+
       <div
         class="thought-button"
         @click="showForm ? addThought() : setShowForm()"
@@ -69,7 +90,6 @@ export default {
   data() {
     return {
       showForm: false,
-      isActive: false,
       localThoughts: [],
       thoughtObj: { text: '' },
       tags: ['Pensée', 'Note', 'Code']
@@ -97,8 +117,7 @@ export default {
     setShowForm() {
       this.showForm = true
       setTimeout(function() {
-        const div = document.getElementById('thought-content')
-        div.focus()
+        document.getElementById('thought-content').focus()
       }, 0)
     },
     addThought() {
@@ -117,14 +136,21 @@ export default {
     saveThoughts() {
       this.localThoughts.forEach(function(v) {
         delete v.active
+        delete v.copied
       })
       const parsed = JSON.stringify(this.localThoughts)
+      console.log(JSON.stringify(this.localThoughts, null, 2))
       localStorage.setItem('thoughts', parsed)
     },
     removeThought(x) {
       this.localThoughts.splice(x, 1)
       this.saveThoughts()
       window.location.reload()
+    },
+    copyThought(index) {
+      let item = this.localThoughts[index]
+      item.copied = !item.copied
+      this.$set(this.localThoughts, index, item)
     },
     deleteAll() {
       localStorage.clear()
@@ -159,19 +185,45 @@ export default {
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
     padding: 8px;
     margin: 14px 22px;
+    p {
+      word-break: break-all;
+    }
   }
   .active {
     background-color: $blue3;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
   }
-  .delete-thought {
-    background-color: $red2;
-    color: $green3;
-    font-size: 18px;
-    padding: 0.4rem;
-    width: 20%;
-    margin: auto;
-    border-radius: 12px;
+  .thought-buttons {
+    margin: 0 1rem;
+    display: flex;
+
+    .delete-thought {
+      background-color: $red2;
+      color: $green3;
+      font-size: 18px;
+      padding: 0.4rem;
+      width: 20%;
+      margin: auto;
+      border-radius: 12px;
+    }
+    .edit-thought {
+      background-color: $blue1;
+      color: $green3;
+      font-size: 18px;
+      padding: 0.4rem;
+      width: 20%;
+      margin: auto;
+      border-radius: 12px;
+    }
+    .copy-thought {
+      background-color: $blue3;
+      color: $green1;
+      font-size: 18px;
+      padding: 0.4rem;
+      width: 20%;
+      margin: auto;
+      border-radius: 12px;
+    }
   }
 }
 .sticky {
@@ -183,6 +235,7 @@ export default {
   width: 100%;
   transform: translate(-50%, 0);
   .new-thought {
+    transition: ease-in 0.5s;
     .thought-form {
       background-color: white;
       color: $blue1;
@@ -198,7 +251,7 @@ export default {
       margin: 4px 18px 0 18px;
       font-size: 16px;
       color: $blue1;
-      .buttons {
+      .form-buttons {
         display: flex;
         .delete-button {
           background-color: $red2;
@@ -244,5 +297,22 @@ export default {
 }
 [contenteditable] {
   outline: 0px solid transparent;
+}
+/* TRANSITIONS */
+
+.focus-enter-active,
+.focus-leave-active {
+  transition: opacity 100ms ease;
+}
+.focus-enter, .focus-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 200ms ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
