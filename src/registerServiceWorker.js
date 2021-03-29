@@ -20,8 +20,10 @@ if (process.env.NODE_ENV === 'production') {
       console.log('New content is downloading.')
     },
     updated() {
-      window.location.reload
       console.log('New content is available; please refresh.')
+      caches.keys().then(function(names) {
+        for (let name of names) caches.delete(name)
+      })
     },
     offline() {
       console.log(
