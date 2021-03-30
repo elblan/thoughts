@@ -4,13 +4,13 @@ Micronotes PWA running on [github pages](https://wwww.elblan.github.io/thoughts)
 
 ## TODO:
 
-clean up and create proper components
-fix focus on add for safari
-vuex, vuex-persist
-firebase auth + storage
-transitions
-edit thought
-archive (vs full delete)
+- clean up and create proper components
+- fix focus on add for safari
+- vuex, vuex-persist
+- firebase auth + storage
+- transitions
+- edit thought
+- archive (vs full delete)
 
 ## Project setup
 
