@@ -46,7 +46,7 @@
     </div>
     <div class="sticky">
       <transition name="fade">
-        <div class="new-thought" v-show="showForm">
+        <div class="new-thought" v-if="showForm">
           <div class="thought-meta">
             <div class="form-buttons">
               <div class="delete-button" @click="deleteAll">Delete all</div>
@@ -96,6 +96,7 @@ export default {
     }
   },
   mounted() {
+    this.$ga.page('/')
     if (localStorage.getItem('thoughts')) {
       try {
         this.localThoughts = JSON.parse(localStorage.getItem('thoughts'))
@@ -116,7 +117,6 @@ export default {
     },
     setShowForm() {
       this.showForm = true
-      this.thoughtObj.text = ''
       setTimeout(function() {
         document.getElementById('thought-content').focus()
       }, 0)
@@ -287,7 +287,6 @@ export default {
 }
 .thought-button {
   bottom: 15px;
-
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
   background-color: $blue2;
   border-radius: 50px;
