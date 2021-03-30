@@ -1,11 +1,16 @@
 # thoughts
 
-TODO:
+Micronotes PWA running on [github pages](https://wwww.elblan.github.io/thoughts)
 
-- create proper components
-- vuex, vuex-persist
-- transitions
-- copy paste when selected
+## TODO:
+
+clean up and create proper components
+fix focus on add for safari
+vuex, vuex-persist
+firebase auth + storage
+transitions
+edit thought
+archive (vs full delete)
 
 ## Project setup
 

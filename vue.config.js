@@ -1,5 +1,11 @@
 module.exports = {
-  pwa: {},
+  pwa: {
+    name: 'Thoughts',
+    themeColor: '#e4fce1',
+    msTileColor: '#5f78eb',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black-translucent'
+  },
   css: {
     loaderOptions: {
       sass: {

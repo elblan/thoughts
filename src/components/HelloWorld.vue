@@ -186,7 +186,7 @@ export default {
     padding: 8px;
     margin: 14px 22px;
     p {
-      word-break: break-all;
+      overflow-wrap: break-word;
     }
   }
   .active {
