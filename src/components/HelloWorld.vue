@@ -129,8 +129,8 @@ export default {
       let newDate = new Date()
       this.localThoughts.unshift({ text: newText, date: newDate })
       this.thoughtObj.text = ''
-      this.saveThoughts()
       this.showForm = false
+      this.saveThoughts()
       window.scrollTo(0, 0)
     },
     saveThoughts() {
