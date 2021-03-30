@@ -114,6 +114,7 @@ export default {
       let item = this.localThoughts[index]
       item.active = !item.active
       this.$set(this.localThoughts, index, item)
+      this.$ga.event('thought', 'setActive', 'set active', 1)
     },
     setShowForm() {
       this.showForm = true
@@ -133,6 +134,7 @@ export default {
       this.showForm = false
       this.saveThoughts()
       window.scrollTo(0, 0)
+      this.$ga.event('thought', 'new', newText, 1)
     },
     saveThoughts() {
       this.localThoughts.forEach(function(v) {
@@ -147,15 +149,18 @@ export default {
       this.localThoughts.splice(x, 1)
       this.saveThoughts()
       window.location.reload()
+      this.$ga.event('thought', 'delete', 'delete single', 1)
     },
     copyThought(index) {
       let item = this.localThoughts[index]
       item.copied = !item.copied
       this.$set(this.localThoughts, index, item)
+      this.$ga.event('thought', 'copied', item.text, 1)
     },
     deleteAll() {
       localStorage.clear()
       window.location.reload()
+      this.$ga.event('thought', 'deleteAll', 'deleted all', 1)
     },
     format: format
   }
