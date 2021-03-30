@@ -2,7 +2,7 @@
 
 Micronotes PWA running on [github pages](https://elblan.github.io/thoughts)
 
-TODO:
+## TODO:
 
 - clean up and create proper components
 - fix focus on add for safari
