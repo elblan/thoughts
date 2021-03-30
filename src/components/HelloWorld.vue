@@ -116,6 +116,7 @@ export default {
     },
     setShowForm() {
       this.showForm = true
+      this.thoughtObj.text = ''
       setTimeout(function() {
         document.getElementById('thought-content').focus()
       }, 0)
