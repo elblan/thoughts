@@ -1,6 +1,6 @@
 # thoughts
 
-Micronotes PWA running on elblan.github.io/thoughts
+Micronotes PWA running on [github pages](elblan.github.io/thoughts)
 
 TODO:
 
