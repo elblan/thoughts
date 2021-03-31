@@ -50,9 +50,6 @@
           <div class="thought-meta">
             <div class="form-buttons">
               <div class="delete-button" @click="deleteAll">Delete all</div>
-              <div class="cancel-button" @click="showForm = false">
-                Cancel
-              </div>
             </div>
             <span class="counter">{{ 160 - thoughtObj.text.length }}</span>
           </div>
@@ -63,20 +60,13 @@
               @input="onInput"
             ></div>
           </div>
-          <div class="thought-submit">
-            <!--
-        <div class="tags">
-          <span v-for="tag in tags" :key="tag" class="tag">{{ tag }}</span>
-        </div>-->
-          </div>
         </div>
       </transition>
-
-      <div
-        class="thought-button"
-        @click="showForm ? addThought() : setShowForm()"
-      >
-        {{ showForm ? 'Save' : 'Add thought' }}
+      <div id="submit-buttons">
+        <div id="cancel" v-if="showForm" @click="showForm = false">Cancel</div>
+        <div id="add-save" @click="showForm ? addThought() : setShowForm()">
+          {{ showForm ? 'Save' : 'Add thought' }}
+        </div>
       </div>
     </div>
   </div>
@@ -198,6 +188,7 @@ export default {
   .active {
     background-color: $blue3;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    transition: all 0.15s ease-in-out;
   }
   .thought-buttons {
     margin: 0 1rem;
@@ -254,6 +245,7 @@ export default {
     .thought-meta {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin: 4px 18px 0 18px;
       font-size: 16px;
       color: $blue1;
@@ -274,31 +266,31 @@ export default {
         }
       }
     }
-    .thought-submit {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin: 8px 18px 6px 18px;
-      font-size: 16px;
-      .tag {
-        background-color: $green3;
-        color: $orange1;
-        padding: 0.4rem;
-        margin: 0.2rem;
-        border-radius: 12px;
-      }
-    }
   }
 }
-.thought-button {
-  bottom: 15px;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
-  background-color: $blue2;
-  border-radius: 50px;
-  padding: 1rem;
-  color: white;
-  width: 40%;
-  margin: auto;
+#submit-buttons {
+  display: flex;
+  margin-top: 12px;
+  #cancel {
+    bottom: 15px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+    background-color: $blue3;
+    border-radius: 16px;
+    padding: 1rem;
+    color: $blue2;
+    width: 35%;
+    margin: auto;
+  }
+  #add-save {
+    bottom: 15px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+    background-color: $blue2;
+    border-radius: 16px;
+    padding: 1rem;
+    color: white;
+    width: 35%;
+    margin: auto;
+  }
 }
 [contenteditable] {
   outline: 0px solid transparent;
