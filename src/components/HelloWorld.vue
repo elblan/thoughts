@@ -1,48 +1,58 @@
 <template>
   <div class="thoughts-wrapper">
     <div class="thoughts">
-      <div
-        class="thoughts-list"
-        v-for="(thought, index) in localThoughts"
-        :key="thought.text"
+      <draggable
+        v-model="localThoughts"
+        group="thoughts"
+        @start="drag = true"
+        @end="dragEnd()"
+        v-bind="dragOptions"
       >
-        <transition name="fade">
-          <div class="thought-meta-published" v-if="thought.active">
-            {{ format(thought.date) }}
-          </div></transition
-        >
-        <div
-          class="thought"
-          :class="{ active: thought.active }"
-          @click="toggleActive(index)"
-        >
-          <p>{{ thought.text }}</p>
-          <!-- <span>{{ thought.text.length }}</span> -->
-        </div>
-        <transition name="fade">
-          <div class="thought-buttons">
-            <div
-              class="delete-thought"
-              v-if="thought.active"
-              @click="removeThought(index)"
+        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+          <div
+            class="thoughts-list"
+            v-for="(thought, index) in localThoughts"
+            :key="thought.text"
+          >
+            <transition name="fade">
+              <div class="thought-meta-published" v-if="thought.active">
+                {{ format(thought.date) }}
+              </div></transition
             >
-              delete
+            <div
+              class="thought"
+              :class="{ active: thought.active }"
+              @click="toggleActive(index)"
+            >
+              <p>{{ thought.text }}</p>
+              <!-- <span>{{ thought.text.length }}</span> -->
             </div>
-            <!--
+            <transition name="fade">
+              <div class="thought-buttons">
+                <div
+                  class="delete-thought"
+                  v-if="thought.active"
+                  @click="removeThought(index)"
+                >
+                  delete
+                </div>
+                <!--
             <div class="edit-thought" v-if="thought.active">
               edit
             </div> -->
-            <div
-              class="copy-thought"
-              v-if="thought.active"
-              @click="copyThought(index)"
-              v-clipboard:copy="thought.text"
-            >
-              {{ thought.copied ? 'copied' : 'copy' }}
-            </div>
+                <div
+                  class="copy-thought"
+                  v-if="thought.active"
+                  @click="copyThought(index)"
+                  v-clipboard:copy="thought.text"
+                >
+                  {{ thought.copied ? 'copied' : 'copy' }}
+                </div>
+              </div>
+            </transition>
           </div>
-        </transition>
-      </div>
+        </transition-group>
+      </draggable>
     </div>
     <div class="sticky">
       <transition name="fade">
@@ -74,11 +84,14 @@
 
 <script>
 import { format } from 'timeago.js'
+import draggable from 'vuedraggable'
 
 export default {
   name: 'HelloWorld',
+  components: { draggable },
   data() {
     return {
+      drag: false,
       showForm: false,
       localThoughts: [],
       thoughtObj: { text: '' },
@@ -93,6 +106,16 @@ export default {
         console.log(JSON.stringify(this.localThoughts, null, 2))
       } catch (e) {
         localStorage.removeItem('thoughts')
+      }
+    }
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost'
       }
     }
   },
@@ -151,6 +174,10 @@ export default {
       localStorage.clear()
       window.location.reload()
       this.$ga.event('thought', 'deleteAll', 'deleted all', 1)
+    },
+    dragEnd() {
+      this.drag = false
+      this.saveThoughts()
     },
     format: format
   }
@@ -311,5 +338,16 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+/* DRAG DROP */
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: $blue3;
 }
 </style>
