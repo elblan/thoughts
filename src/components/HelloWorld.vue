@@ -4,7 +4,7 @@
       <draggable
         v-model="localThoughts"
         group="thoughts"
-        @start="drag = true"
+        @start="dragStart()"
         @end="dragEnd()"
         v-bind="dragOptions"
       >
@@ -115,7 +115,8 @@ export default {
         animation: 200,
         group: 'description',
         disabled: false,
-        ghostClass: 'ghost'
+        ghostClass: 'ghost',
+        delay: 200
       }
     }
   },
@@ -175,8 +176,13 @@ export default {
       window.location.reload()
       this.$ga.event('thought', 'deleteAll', 'deleted all', 1)
     },
+    dragStart() {
+      this.drag = true
+      window.navigator.vibrate(10)
+    },
     dragEnd() {
       this.drag = false
+      window.navigator.vibrate(10)
       this.saveThoughts()
     },
     format: format
