@@ -176,6 +176,7 @@ export default {
       window.location.reload()
       this.$ga.event('thought', 'deleteAll', 'deleted all', 1)
     },
+
     dragStart() {
       this.drag = true
       window.navigator.vibrate(10)
