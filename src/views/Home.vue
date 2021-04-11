@@ -1,19 +1,26 @@
 <template>
   <div class="home">
-    <HelloWorld />
+    <Header id="header" />
+    <ThoughtsList />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import ThoughtsList from '@/components/ThoughtsList.vue'
+import Header from '@/components/Header.vue'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    ThoughtsList,
+    Header
   }
 }
 </script>
 
-<style></style>
+<style scoped>
+#header {
+  position: sticky;
+}
+</style>

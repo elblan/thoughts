@@ -87,7 +87,7 @@ import { format } from 'timeago.js'
 import draggable from 'vuedraggable'
 
 export default {
-  name: 'HelloWorld',
+  name: 'ThoughtsList',
   components: { draggable },
   data() {
     return {
